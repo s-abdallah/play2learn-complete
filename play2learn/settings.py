@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -31,16 +32,47 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # Default apps
     "django.contrib.admin",
+    "django.contrib.admindocs",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
+    "django.contrib.sites",
+    # Third-party
+    # Crispy forms
+    "crispy_forms",
+    "crispy_bootstrap5",
+    # Allauth for authentication
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
     # local apps
-    "games.apps.GamesConfig"
+    "pages.apps.PagesConfig",
+    "games.apps.GamesConfig",
+    "users.apps.UsersConfig",
 ]
+
+SITE_ID = 1
+
+# use custom form
+ACCOUNT_SIGNUP_FORM_CLASS = "users.forms.SignupForm"
+
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, even w/o `allauth`
+    "django.contrib.auth.backends.ModelBackend",
+    # `allauth`-specific auth methods, such as login by e-mail
+    "allauth.account.auth_backends.AuthenticationBackend",
+)
+
+# Redirect after login
+# LOGIN_REDIRECT_URL = "/"
+LOGIN_URL = "account_login"
+LOGIN_REDIRECT_URL = "pages:homepage"
+# Redirect after logout
+LOGOUT_REDIRECT_URL = "/"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -49,6 +81,7 @@ MIDDLEWARE = [
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
@@ -77,9 +110,19 @@ WSGI_APPLICATION = "play2learn.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
+    # "default": {
+    #     "ENGINE": "django.db.backends.sqlite3",
+    #     "NAME": BASE_DIR / "db.sqlite3",
+    # }
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        # "ENGINE": "django.db.backends.sqlite3",
+        # "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "play2learn",
+        "USER": "abdallahsalah",
+        "PASSWORD": "root",
+        "HOST": "localhost",
+        "PORT": 5432,
     }
 }
 
@@ -93,6 +136,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        "OPTIONS": {
+            "min_length": 8,
+        },
     },
     {
         "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
@@ -102,6 +148,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# AUTHENTICATION SETTINGS
+AUTH_USER_MODEL = "users.CustomUser"
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
@@ -116,15 +164,62 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
+# https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = "static/"
+# Define the URL to use for static files
+STATIC_URL = "/static/"
 
+# Define the directory where static files are stored during development
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+
+# Define the directory where user files are stored
+MEDIA_URL = "/media/"
+# MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+# private-storage settings
+# Directory where private files will be stored
+PRIVATE_STORAGE_ROOT = os.path.join(BASE_DIR, "private_storage")
+
+# Permission method to determine access control
+PRIVATE_STORAGE_AUTH_FUNCTION = "private_storage.permissions.allow_staff"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+SENDGRID_SANDBOX_MODE_IN_DEBUG = True
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+
+## django-allauth settings
+# Email verification (optional)
+ACCOUNT_EMAIL_VERIFICATION = "optional"  # Or 'mandatory'
+# Whether login is by email or username
+ACCOUNT_AUTHENTICATION_METHOD = "email"  # Or 'email' or 'username_email' or 'username'
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1  # Default: 3
+# Minimum password length
+ACCOUNT_PASSWORD_MIN_LENGTH = 8
+# Whether users are required to confirm their email addresses
+ACCOUNT_EMAIL_REQUIRED = True  # Default: False
+# Disable email confirmation (optional)
+ACCOUNT_EMAIL_VERIFICATION = "none"
+# ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5  # Default: 5
+# ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 86400  # Default 300
+ACCOUNT_LOGOUT_REDIRECT_URL = "account_login"  # Default: '/'
+ACCOUNT_USERNAME_REQUIRED = False  # Default: True
+
+# Add this new setting for rate limiting
+ACCOUNT_RATE_LIMITS = {
+    # Change the key for failed login attempts
+    "login_failed": "5/1h",  # 5 attempts per hour
+    # You can add other rate limits as well
+    "signup": "10/h",  # Allow 5 signups per hour
+    "password_reset": "5/h",  # Allow 5 password resets per hour
+}

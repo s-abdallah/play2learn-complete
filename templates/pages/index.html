@@ -1,0 +1,54 @@
+{% extends "_base.html" %}
+
+{% block title %}Home Page{% endblock %}
+
+{% block main %}
+
+<section class="row px-5 mt-3">
+    <div class="col-md-12 mt-2 mb-2 p-2">
+        <h2 class="d-block text-start">Happy Reviews Say...</h2>
+        <div id="quoteCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="10000">
+            <div class="carousel-inner col-md-12">
+            </div>
+            <button class="carousel-control-prev border" type="button" data-bs-target="#quoteCarousel"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next border" type="button" data-bs-target="#quoteCarousel"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+
+</section>
+<section class="row px-5">
+    <div class="col-lg-6 col-md-12 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title text-start">Math Facts</h5>
+                <p class="card-text mt-4 text-start">Enhance your arithmetic skills with interactive math games. The
+                    game makes learning addition, subtraction, multiplication, and division fun and easy. </p>
+                <a href="{% url 'games:math-facts' %}" class="btn btn-secondary btn-lg text-light float-end">Play</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 col-md-12 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title text-start">Anagram Hunt</h5>
+                <p class="card-text mt-4 text-start">Anagram Hunt is dedicated to finding every Anagram of HUNT that can
+                    be
+                    created by
+                    rearranging every single letter found in HUNT. You will also find possible anagrams of HUNT with an
+                    additional added letter, as well as compound and composite anagrams of HUNT.</p>
+                <a href="{% url 'games:anagram-hunt' %}" class="btn btn-secondary btn-lg text-light float-end">Play</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

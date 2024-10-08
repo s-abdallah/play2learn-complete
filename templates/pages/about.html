@@ -1,0 +1,25 @@
+{% extends "_base.html" %}
+
+{% block title %} About us {% endblock %}
+
+{% block main %}
+{% load static %}
+
+<section class="blog row">
+    <div class="col-12">
+        <article>
+            <h2 class="text-start">About Us</h2>
+            <p class="d-block my-4 text-start"> Lorem ipsum dolor sit amet consectetur adipisicing
+                elit. Tempore expedita suscipit illo vitae quis voluptatem maiores minima facilis, velit, alias dolorum
+                consectetur pariatur placeat quibusdam vel fugiat exercitationem quia? Magnam! </p>
+
+            <p class="d-block my-4 text-start"><a href="{% url 'pages:contactpage' %}"
+                    class="btn btn-secondary btn-lg text-light">Contact us</a></p>
+            <img src="{% static 'images/gamer-rejoices-in-the-victory.jpeg' %}" alt="Gamer rejoices in the victory"
+                class="img-fluid my-3 float-start">
+
+        </article>
+    </div>
+</section>
+
+{% endblock %}

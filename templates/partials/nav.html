@@ -1,0 +1,56 @@
+<!-- Main Navigation -->
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light border-bottom border-2 border-dark">
+        <!-- Include the logo -->
+        {% include 'partials/logo.html' %}
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a href="{% url 'pages:homepage' %}" class="nav-link text-light">Home</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link text-light dropdown-toggle" href="#" id="featuresDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Games
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="featuresDropdown">
+                        <li>
+                            <a href="{% url 'games:math-facts' %}" class="dropdown-item">Math Facts Practice</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'games:anagram-hunt' %}" class="dropdown-item">Anagram Hunt</a>
+                        </li>
+                    </ul>
+                </li>
+                {% if not user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'account_login' %}">Log in</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'account_signup' %}">Sign up</a>
+                </li>
+                {% else %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Me
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{% url 'my-account' %}">My Account</a>
+                        <a class="dropdown-item" href="#">My Leaderboards</a>
+                        <div class="dropdown-divider"></div>
+                        <form method="post" action="{% url 'account_logout' %}">
+                            {% csrf_token %}
+                            <button class="btn dropdown-item">Log out</button>
+                        </form>
+                    </div>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+</div>

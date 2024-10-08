@@ -1,0 +1,44 @@
+<div class="container">
+    <div class="row border-top border-2 border-dark">
+        <div class="col-lg-6 col-md-12">
+            <p class="text-lg-start d-block text-md-center text-light h-100 pt-2">
+                © {{ currentYear }} Play2Learn. All rights reserved.
+            </p>
+        </div>
+        <div class="col-lg-6 col-md-12">
+            <ul
+                class="social d-flex justify-content-center justify-content-lg-end align-items-center list-unstyled h-100">
+                {% if user.is_staff %}
+                <li class="mx-2">
+                    <a href="/admin/" class="text-light"><i class="fas fa-lock"></i></a>
+                </li>
+                {% endif %}
+                <li class="mx-2">
+                    <a href="{% url 'pages:aboutpage' %}" class="text-light">
+                        <i class="fas fa-info"></i>
+                    </a>
+                </li>
+                <li class="mx-2">
+                    <a href="{% url 'pages:contactpage' %}" class="text-light">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </li>
+                <li class="mx-2">
+                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="text-light">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </li>
+                <li class="mx-2">
+                    <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="text-light">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                </li>
+                <li class="mx-2">
+                    <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="text-light">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

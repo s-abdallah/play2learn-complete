@@ -1,0 +1,43 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <script src="https://kit.fontawesome.com/f804978a2a.js" crossorigin="anonymous"></script>
+  {% block javascript %}{% endblock %}
+
+  <title>{% block title %}{% endblock %} | Django Jokes</title>
+</head>
+
+<body>
+  <header class="fixed-top shadow">
+    <!-- Include the nav -->
+    {% include 'partials/nav.html' %}
+  </header>
+
+  <div class="container mt-5 pt-5">
+    <main class="container">
+      <!-- Include the messages -->
+      {% include 'partials/messages.html' %}
+
+      {% block main %}<h2>Welcome!</h2>{% endblock %}
+    </main>
+  </div>
+
+  <footer class="shadow">
+    <!-- Include the footer -->
+    {% include 'partials/footer.html' %}
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
