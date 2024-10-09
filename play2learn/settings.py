@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "pages.apps.PagesConfig",
     "games.apps.GamesConfig",
     "users.apps.UsersConfig",
+    "common.apps.CommonConfig",
 ]
 
 SITE_ID = 1
@@ -66,6 +67,17 @@ AUTHENTICATION_BACKENDS = (
     # `allauth`-specific auth methods, such as login by e-mail
     "allauth.account.auth_backends.AuthenticationBackend",
 )
+
+# EMAIL
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_USE_SSL = False
+SENDGRID_API_KEY = os.environ.get("SENDGRID_API_KEY")
+EMAIL_HOST = "smtp.sendgrid.net"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "apikey"
+EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
+DEFAULT_FROM_EMAIL = "info@abdallaheliwa.com"
 
 # Redirect after login
 # LOGIN_REDIRECT_URL = "/"
@@ -191,12 +203,18 @@ PRIVATE_STORAGE_AUTH_FUNCTION = "private_storage.permissions.allow_staff"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+if os.environ.get("ENVIRONMENT") != "production":
+    from .local_settings import *
+
 SENDGRID_SANDBOX_MODE_IN_DEBUG = True
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
+# The email address that sends the form
+DEFAULT_FROM_EMAIL = "info@abdallaheliwa.com"
+ADMIN_EMAIL = "aibneliwa@gmail.com"
 
 ## django-allauth settings
 # Email verification (optional)

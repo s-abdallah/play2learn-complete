@@ -1,6 +1,7 @@
 {% extends "_base.html" %}
+{% load crispy_forms_tags %}
 
-{% block title %} About us {% endblock %}
+{% block title %} Contact us {% endblock %}
 
 {% block main %}
 
@@ -9,6 +10,11 @@
         <div class="card border-0 mb-5">
             <div class="card-body">
                 <h2 id="form-title" class="card-title text-start">Contact Us</h2>
+                <form method="POST" novalidate>
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button class="form-control btn btn-primary">Submit</button>
+                </form>
             </div>
         </div>
     </div>
