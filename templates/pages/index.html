@@ -9,6 +9,27 @@
         <h2 class="d-block text-start">Happy Reviews Say...</h2>
         <div id="quoteCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="10000">
             <div class="carousel-inner col-md-12">
+                {% for review in featured_reviews %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div class="text-center w-100">
+                            <blockquote class="blockquote text-start w-100">
+                                <p class="mb-4 mt-4"><em>{{ review.review }}</em></p>
+                                <footer class="blockquote-footer text-end">
+                                    {% with user=review.user %}
+                                    <cite title="{{ user.first_name }} {{ user.last_name }}">
+                                        {{ user.first_name }} {{ user.last_name }}
+                                    </cite>
+                                    {% endwith %}
+                                </footer>
+                            </blockquote>
+                        </div>
+                    </div>
+
+                </div>
+
+                {% endfor %}
             </div>
             <button class="carousel-control-prev border" type="button" data-bs-target="#quoteCarousel"
                 data-bs-slide="prev">

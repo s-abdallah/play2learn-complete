@@ -1,0 +1,29 @@
+{% extends "_base.html" %}
+{% load static %}
+
+{% block title %}Review{% endblock %}
+{% block main %}
+<div class="card border-primary m-auto mb-3 text-center" style="max-width: 30rem">
+    <div class="card-header">Your Review</div>
+    <div class="card-body text-primary">
+        <h5 class="card-title">{{ review.review }}</h5>
+    </div>
+    <div class="card-footer">
+        <div class="border-bottom border-faded pb-2">
+            {% if review.is_featured %}
+            <strong>Your review is approved by the admin</strong>
+            {% else %}
+            <strong>Waiting for approval</strong>
+            {% endif %}
+        </div>
+        <div class="border-bottom border-faded m-2 pb-2">
+            {% if review.user == user %}
+            <a href="{% url 'update-review' review.slug %}" class="btn btn-info btn-sm me-2">Update</a>
+            <a href="{% url 'delete-review' review.slug %}" class="btn btn-danger btn-sm me-2">Delete</a>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

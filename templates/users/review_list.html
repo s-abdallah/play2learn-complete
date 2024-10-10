@@ -1,0 +1,69 @@
+{% extends "_base.html" %}
+
+{% block title %}Reviews{% endblock %}
+
+{% block main %}
+<div class="row">
+    <div class="col-12 col-md-2 col-lg-3">
+        <h2>Reviews</h2>
+    </div>
+    <div class="col-12 col-md-2 col-lg-3 text-end">
+        <a class="btn btn-success btn-sm m-2" href="{% url 'add-review' %}">
+            + New Review
+        </a>
+    </div>
+</div>
+
+<div class="table-responsive py-5">
+    <table class="table table-striped" style="min-width: 50vw">
+        <thead>
+            <tr>
+                <th>Review</th>
+                <th>Detail</th>
+                <th>Approval</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for review in review_list %}
+            <tr>
+                <td>
+                    <p>{{ review.review }}</p>
+                </td>
+                <td>
+                    <a class="btn btn-success btn-sm m-2" href="{{ review.get_absolute_url }}">
+                        Read Review
+                    </a>
+                </td>
+                <td>
+                    {% if review.is_featured %}
+                    <em>YES</em>
+                    {% else %}
+                    <em>NO</em>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if review.user == user %}
+                    <a href="{% url 'update-review' review.slug %}">
+                        <i class="fas fa-pencil-alt"></i>
+                    </a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="{% url 'delete-review' review.slug %}">
+                        <i class="far fa-trash-alt"></i>
+                    </a>
+                    {% else %}
+                    <small>
+                        by {{ review.user.username }}
+                    </small>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Include the paginator -->
+{% include 'partials/paginator.html' %}
+
+{% endblock %}

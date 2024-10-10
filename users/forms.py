@@ -4,6 +4,8 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserChangeForm
 
+from django.forms import ModelForm, Textarea
+from .models import Review
 
 BIRTH_YEAR_CHOICES = range(1915, datetime.now().year)
 
@@ -29,4 +31,19 @@ class CustomUserChangeForm(UserChangeForm):
                 attrs={"style": "width: 31%; display: inline-block; margin: 0 1%"},
                 years=BIRTH_YEAR_CHOICES,
             )
+        }
+
+
+class ReviewForm(ModelForm):
+    class Meta:
+        model = Review
+
+        fields = ["review"]
+        widgets = {
+            "review": Textarea(
+                attrs={"cols": 80, "rows": 2, "placeholder": "Make it Awesome!"}
+            ),
+        }
+        help_texts = {
+            "review": "No bad reviews please.",
         }

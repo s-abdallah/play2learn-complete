@@ -9,11 +9,18 @@ from common.utils.local_email import send_email
 
 from .forms import ContactForm
 from .models import Contact
+from users.models import Review
 
 
 # Create your views here.
 class HomePageView(TemplateView):
     template_name = "pages/index.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Only show featured reviews
+        context["featured_reviews"] = Review.objects.filter(is_featured=True)
+        return context
 
 
 class AboutPageView(TemplateView):

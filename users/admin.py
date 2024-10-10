@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
 
 CustomUser = get_user_model()
+from .models import Review
 
 
 @admin.register(CustomUser)
@@ -18,3 +19,15 @@ class CustomUserAdmin(UserAdmin):
             },
         ),
     )
+
+
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
+    model = Review
+    list_display = ["review", "is_featured", "created", "updated"]
+
+    def get_readonly_fields(self, request, obj=None):
+        if obj:  # editing an existing object
+            return ("slug", "created", "updated")
+
+        return ()

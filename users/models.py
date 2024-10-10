@@ -1,5 +1,11 @@
 from django.contrib.auth.models import AbstractUser
+from django.conf import settings
+
+from django.utils.text import slugify
+import hashlib
+
 from django.db import models
+
 from django.urls import reverse
 
 from django.core.exceptions import ValidationError
@@ -24,3 +30,32 @@ class CustomUser(AbstractUser):
 
     def get_absolute_url(self):
         return reverse("my-account")
+
+
+class Review(models.Model):
+    class Meta:
+        ordering = ["review"]
+
+    review = models.TextField()
+    slug = models.SlugField(max_length=50, unique=True, null=False, editable=False)
+    # add User field to the model
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    is_featured = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def get_absolute_url(self):
+        return reverse("read-review", args=[self.slug])
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            # Use the first 10 characters of the review to generate the slug
+            review_snippet = self.review[:50]  # Extract first 50 characters
+            base_slug = slugify(review_snippet)  # Slugify the snippet
+            unique_slug = f"{base_slug}-{hashlib.md5(self.user.username.encode('utf-8')).hexdigest()[:6]}"  # Ensure uniqueness using hash
+            self.slug = unique_slug
+
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"Review by {self.user.username}"
