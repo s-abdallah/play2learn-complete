@@ -10,7 +10,10 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a href="{% url 'pages:homepage' %}" class="nav-link text-light">Home</a>
+                    <a href="{% url 'pages:homepage' %}"
+                        class="nav-link {% if request.resolver_match.url_name == 'homepage' %}active{% endif %}">
+                        Home
+                    </a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link text-light dropdown-toggle" href="#" id="featuresDropdown" role="button"
@@ -19,19 +22,31 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="featuresDropdown">
                         <li>
-                            <a href="{% url 'games:math-facts' %}" class="dropdown-item">Math Facts Practice</a>
+                            <a href="{% url 'games:math-facts' %}"
+                                class="dropdown-item {% if request.resolver_match.url_name == 'math-facts' %}active{% endif %}">
+                                Math Facts Practice
+                            </a>
                         </li>
                         <li>
-                            <a href="{% url 'games:anagram-hunt' %}" class="dropdown-item">Anagram Hunt</a>
+                            <a href="{% url 'games:anagram-hunt' %}"
+                                class="dropdown-item {% if request.resolver_match.url_name == 'anagram-hunt' %}active{% endif %}">
+                                Anagram Hunt
+                            </a>
                         </li>
                     </ul>
                 </li>
                 {% if not user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'account_login' %}">Log in</a>
+                    <a class="nav-link {% if request.resolver_match.url_name == 'account_login' %}active{% endif %}"
+                        href="{% url 'account_login' %}">
+                        Log in
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'account_signup' %}">Sign up</a>
+                    <a class="nav-link {% if request.resolver_match.url_name == 'account_signup' %}active{% endif %}"
+                        href="{% url 'account_signup' %}">
+                        Sign up
+                    </a>
                 </li>
                 {% else %}
                 <li class="nav-item dropdown">
@@ -40,9 +55,18 @@
                         Me
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="{% url 'my-account' %}">My Account</a>
-                        <a class="dropdown-item" href="{% url 'list-review' %}">My Reviews</a>
-                        <a class="dropdown-item" href="#">My Leaderboards</a>
+                        <a class="dropdown-item {% if request.resolver_match.url_name == 'my-account' %}active{% endif %}"
+                            href="{% url 'my-account' %}">
+                            My Account
+                        </a>
+                        <a class="dropdown-item {% if request.resolver_match.url_name == 'list-review' %}active{% endif %}"
+                            href="{% url 'list-review' %}">
+                            My Reviews
+                        </a>
+                        <a class="dropdown-item {% if request.resolver_match.url_name == 'list-tracking' %}active{% endif %}"
+                            href="{% url 'list-tracking' %}">
+                            My Tracking History
+                        </a>
                         <div class="dropdown-divider"></div>
                         <form method="post" action="{% url 'account_logout' %}">
                             {% csrf_token %}

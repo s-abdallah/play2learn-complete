@@ -24,7 +24,7 @@ class CustomUserAdmin(UserAdmin):
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
     model = Review
-    list_display = ["review", "is_featured", "created", "updated"]
+    list_display = ["review", "user", "is_featured", "created", "updated"]
 
     def get_readonly_fields(self, request, obj=None):
         if obj:  # editing an existing object

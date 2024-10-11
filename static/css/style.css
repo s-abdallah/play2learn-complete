@@ -31,12 +31,41 @@ footer.shadow {
     background: #f07167;
 }
 
+.btn-color {
+    font-family: 'Oswald', sans-serif;
+    background-color: #f07167;
+    border-color: rgb(178, 178, 178);
+}
+
+.btn-color:hover {
+    background-color: #b04038 !important;
+    border-color: rgb(127, 125, 125);
+}
+
 main {
     min-height: 100vh;
 }
 
 .navbar .container {
     max-width: 1140px;
+}
+
+.nav-link.active {
+    pointer-events: none;
+    color: rgb(42, 40, 40) !important;
+    position: relative;
+}
+
+.nav-link.active::after {
+    background-color: rgb(76, 76, 76);
+    width: 80%;
+    height: 2px;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    margin: auto;
+    content: '';
 }
 
 .carousel-fade .carousel-item blockquote {
@@ -63,6 +92,17 @@ main {
 
 blockquote em {
     color: #00afb9;
+}
+
+/* TABLE STYLES */
+table thead th {
+    font-family: 'Oswald', sans-serif;
+}
+
+.active>.page-link,
+.page-link.active {
+    background: #f07167;
+    font-family: 'Oswald', sans-serif;
 }
 
 /* FORM STYLES */

@@ -8,10 +8,13 @@ from django.views.generic import (
     DetailView,
     DeleteView,
 )
+from django.utils.functional import cached_property
 
 from allauth.account.views import PasswordChangeView
 
 from .models import Review
+
+from games.models import GameTracking
 from .forms import CustomUserChangeForm, ReviewForm
 
 # messages framework
@@ -46,9 +49,14 @@ class SubmitReviewView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class ReviewListView(ListView):
+class ReviewListView(LoginRequiredMixin, ListView):
     model = Review
     paginate_by = 5
+    # context_object_name = "reviews"
+
+    def get_queryset(self):
+        user = self.request.user
+        return Review.objects.filter(user=user)
 
 
 class ReviewDetailView(DetailView):
@@ -82,3 +90,35 @@ class ReviewDeleteView(UserPassesTestMixin, DeleteView):
     def form_valid(self, form):
         messages.success(self.request, "Review deleted.")
         return super().form_valid(form)
+
+
+class TrackingListView(LoginRequiredMixin, ListView):
+    model = GameTracking
+    paginate_by = 10
+    # context_object_name = "reviews"
+
+    def get_queryset(self):
+        user = self.request.user
+        return GameTracking.objects.filter(user=user)
+
+    @cached_property
+    def operation_names(self):
+        return {
+            "+": "Addition",
+            "-": "Subtraction",
+            "*": "Multiplication",
+            "/": "Division",
+        }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Map operation symbols to names for each tracking entry
+        for tracking in context["gametracking_list"]:
+            settings = tracking.game_settings
+            operation_symbol = settings.get("operation", "")
+            settings["operation_name"] = self.operation_names.get(
+                operation_symbol, "Unknown Operation"
+            )
+
+        return context

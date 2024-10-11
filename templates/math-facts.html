@@ -1,7 +1,20 @@
 {% extends "_base_vue.html" %}
 
+{% load static %}
+
+{% block javascript %}
+<script>
+  const ajaxStartURL = "{% url 'games:ajax-start-game' %}";
+  const ajaxUpdateURL = "{% url 'games:ajax-update-game' %}";
+  const ajaxEndURL = "{% url 'games:ajax-end-game' %}";
+  const gameType = "math_facts";
+</script>
+<script src="{% static 'js/games.js' %}"></script>
+{% endblock %}
+
+
 {% block title %}Math Facts{% endblock %}
 {% block main %}
-  <h1>Math Facts</h1>
-  {{ block.super }}
+<h1>Math Facts</h1>
+{{ block.super }}
 {% endblock %}

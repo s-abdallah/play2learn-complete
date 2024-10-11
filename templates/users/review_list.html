@@ -8,7 +8,7 @@
         <h2>Reviews</h2>
     </div>
     <div class="col-12 col-md-2 col-lg-3 text-end">
-        <a class="btn btn-success btn-sm m-2" href="{% url 'add-review' %}">
+        <a class="btn btn-success btn-color btn-sm m-2" href="{% url 'add-review' %}">
             + New Review
         </a>
     </div>
@@ -31,7 +31,7 @@
                     <p>{{ review.review }}</p>
                 </td>
                 <td>
-                    <a class="btn btn-success btn-sm m-2" href="{{ review.get_absolute_url }}">
+                    <a class="btn btn-success btn-color btn-sm m-2" href="{{ review.get_absolute_url }}">
                         Read Review
                     </a>
                 </td>

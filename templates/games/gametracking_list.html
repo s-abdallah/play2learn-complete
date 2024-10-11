@@ -1,0 +1,68 @@
+{% extends "_base.html" %}
+
+{% block title %}Tracking History{% endblock %}
+
+{% block main %}
+<div class="row">
+    <div class="col-12 col-md-12">
+        <h2>Tracking History</h2>
+    </div>
+</div>
+
+<div class="table-responsive py-5">
+    <table class="table table-striped" style="min-width: 50vw">
+        <thead>
+            <tr>
+                <th>Game Type</th>
+                <th>Time Start</th>
+                <th>Time End</th>
+                <th>Game Settings</th>
+                <th>Attempts</th>
+                <th>Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for track in gametracking_list %}
+            <tr>
+
+                <td>
+                    {% if track.game_type == 'math_facts' %}
+                    <strong>Math Facts</strong>
+                    {% else %}
+                    <strong>Anagram Hunt</strong>
+                    {% endif %}
+                </td>
+                <td>
+                    <p>{{ track.start_time }}</p>
+                </td>
+
+                <td>
+                    <p>{{ track.end_time }}</p>
+                </td>
+
+                <td>
+                    {% with settings=track.game_settings %}
+                    <p> <small> Operation: </small> {{ settings.operation_name }}</p>
+                    <p> <small> Max Number: </small> {{ settings.max_number }}</p>
+                    {% endwith %}
+                </td>
+
+                <td>
+                    <p><small>{{ track.tries }}</small></p>
+                </td>
+                <td>
+                    <p>
+                        <strong>{{ track.score }}</strong>
+                    </p>
+                </td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Include the paginator -->
+{% include 'partials/paginator.html' %}
+
+{% endblock %}

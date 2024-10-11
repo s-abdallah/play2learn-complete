@@ -8,6 +8,7 @@ from .views import (
     ReviewDeleteView,
     ReviewUpdateView,
     ReviewListView,
+    TrackingListView,
 )
 
 urlpatterns = [
@@ -22,4 +23,5 @@ urlpatterns = [
     path("add-review/", SubmitReviewView.as_view(), name="add-review"),
     path("review/<slug>/", ReviewDetailView.as_view(), name="read-review"),
     path("my-reviews/", ReviewListView.as_view(), name="list-review"),
+    path("my-tracking/", TrackingListView.as_view(), name="list-tracking"),
 ]

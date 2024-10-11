@@ -37,7 +37,7 @@ class Review(models.Model):
         ordering = ["review"]
 
     review = models.TextField()
-    slug = models.SlugField(max_length=50, unique=True, null=False, editable=False)
+    slug = models.SlugField(max_length=300, unique=True, null=False, editable=False)
     # add User field to the model
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     is_featured = models.BooleanField(default=False)
