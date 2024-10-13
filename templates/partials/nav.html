@@ -15,6 +15,13 @@
                         Home
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{% url 'games:leaderboard' %}"
+                        class="nav-link {% if request.resolver_match.url_name == 'leaderboard' %}active{% endif %}">
+                        Leaderboard
+                    </a>
+                </li>
+
                 <li class="nav-item dropdown">
                     <a class="nav-link text-light dropdown-toggle" href="#" id="featuresDropdown" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">

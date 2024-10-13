@@ -4,6 +4,8 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 
+from django.views.generic import ListView
+
 from .models import GameTracking
 import json
 
@@ -84,3 +86,22 @@ def end_game(request):
             return JsonResponse(
                 {"status": "error", "message": "Game not found"}, status=404
             )
+
+
+class LeaderboardView(ListView):
+    model = GameTracking
+    template_name = "games/leaderboard.html"
+    context_object_name = "leaderboard_list"
+    paginate_by = 25
+
+    def get_queryset(self):
+        sort = self.request.GET.get("sort", "score")  # Default sorting by score
+        queryset = GameTracking.objects.all().order_by(sort)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["current_sort"] = self.request.GET.get(
+            "sort", "score"
+        )  # Pass the current sort field
+        return context
