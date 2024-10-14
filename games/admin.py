@@ -23,6 +23,9 @@ class GameTrackAdmin(admin.ModelAdmin):
     ordering = ["-updated"]
     search_fields = ["score", "tries"]
 
+    # Form attributes
+    autocomplete_fields = ["user"]
+
     def get_readonly_fields(self, request, obj=None):
         if obj:  # editing an existing object
             return ("created", "updated")

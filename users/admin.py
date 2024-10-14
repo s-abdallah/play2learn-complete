@@ -2,6 +2,8 @@ from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
 
+from allauth.socialaccount.models import SocialApp, SocialAccount, SocialToken
+
 from common.admin import DjangoGamesAdmin
 
 CustomUser = get_user_model()
@@ -33,3 +35,8 @@ class ReviewAdmin(admin.ModelAdmin):
             return ("slug", "created", "updated")
 
         return ()
+
+
+admin.site.unregister(SocialApp)
+admin.site.unregister(SocialAccount)
+admin.site.unregister(SocialToken)
