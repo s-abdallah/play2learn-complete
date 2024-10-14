@@ -122,7 +122,29 @@ function updateGame(gameId) {
         localStorage.setItem("userInput", "");
       });
     }
-    // word-guess the id of ol has correct guesses.
+    if (gameType == "anagram_hunt") {
+      // listner to check user tries..
+      const answerInput = document.getElementById("answer");
+      answerInput.addEventListener("input", function (e) {
+        const userAnswer = e.target.value.trim(); // Get user's input
+        const wordLength = parseInt(localStorage.getItem("wordLength")); // Get stored word length
+
+        if (userAnswer.length === wordLength) {
+          const guessList = document.getElementById("word-guess");
+          const existingGuesses = Array.from(
+            guessList.getElementsByTagName("li")
+          ).map((li) => li.textContent);
+          if (!existingGuesses.includes(userAnswer)) {
+            // update the user attempts
+            console.log("wrong");
+            let attempts = localStorage.getItem("attempts");
+            attempts++;
+            localStorage.setItem("attempts", attempts);
+            updateAttempts(gameId);
+          }
+        }
+      });
+    }
   }
 }
 

@@ -48,7 +48,7 @@
         >
       </div>
       <div class="row">
-        <input class="form-control" v-model="userInput" />
+        <input class="form-control" id="answer" v-model="userInput" />
       </div>
       <div class="row text-center">
         <ol id="word-guess">
