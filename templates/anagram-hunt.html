@@ -1,5 +1,17 @@
 {% extends "_base_vue.html" %}
 
+{% load static %}
+
+{% block javascript %}
+<script>
+    const ajaxStartURL = "{% url 'games:ajax-start-game' %}";
+    const ajaxUpdateURL = "{% url 'games:ajax-update-game' %}";
+    const ajaxEndURL = "{% url 'games:ajax-end-game' %}";
+    const gameType = "anagram_hunt";
+</script>
+<script src="{% static 'js/games.js' %}"></script>
+{% endblock %}
+
 {% block title %} Anagram Hunt {% endblock %}
 
 {% block main %}

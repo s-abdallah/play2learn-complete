@@ -1,13 +1,21 @@
 <template>
   <div class="container" style="width: 500px">
     <!-- Start Screen -->
-    <div v-if="screen=='start'" class="container">
+    <div v-if="screen == 'start'" class="container">
       <div class="row m-auto">
         <div class="col">
           <div class="row">
             <label for="word-length" class="form-label col">Word Length</label>
-            <select id="word-length" class="form-select col" v-model="wordLength">
-              <option v-for="key in Object.keys(anagrams)" :key="key" :value="key">
+            <select
+              id="word-length"
+              class="form-select col"
+              v-model="wordLength"
+            >
+              <option
+                v-for="key in Object.keys(anagrams)"
+                :key="key"
+                :value="key"
+              >
                 {{ key }}
               </option>
             </select>
@@ -21,7 +29,9 @@
           <li>How many anagrams can you make in a minute?</li>
         </ol>
       </div>
-      <button class="btn btn-primary w-100" @click="play">Play!</button>
+      <button class="btn btn-primary w-100" id="game-start" @click="play">
+        Play!
+      </button>
     </div>
     <!-- Play Screen -->
     <div v-else-if="screen == 'play'" class="container">
@@ -30,16 +40,18 @@
           <span>Score: {{ score }}</span>
           <span>Time Left: {{ timeLeft }}</span>
         </div>
-        <hr>
+        <hr />
       </div>
       <div class="row">
-        <output class="display-5 text-center">{{ currentWord }} ({{ guessesLeft }} left)</output>
+        <output class="display-5 text-center"
+          >{{ currentWord }} ({{ guessesLeft }} left)</output
+        >
       </div>
       <div class="row">
-        <input class="form-control" v-model="userInput">
+        <input class="form-control" v-model="userInput" />
       </div>
       <div class="row text-center">
-        <ol>
+        <ol id="word-guess">
           <li v-for="guess in correctGuesses" :key="guess">{{ guess }}</li>
         </ol>
       </div>
@@ -51,32 +63,37 @@
       </div>
       <div class="row d-flex flex-col text-center">
         <p>You got</p>
-        <div class="display-3">{{ score }}</div>
+        <div class="display-3" id="game-score">{{ score }}</div>
         <p>Anagrams</p>
       </div>
       <div class="row d-flex flex-col text-center">
-        <button @click="play" class="btn btn-primary w-100 m-1">Play Again</button>
-        <button @click="screen = 'start'" class="btn btn-secondary w-100 m-1">Back to Start Screen</button>
+        <button @click="play" id="play-again" class="btn btn-primary w-100 m-1">
+          Play Again
+        </button>
+        <button @click="screen = 'start'" class="btn btn-secondary w-100 m-1">
+          Back to Start Screen
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-  div, label {
-    padding: 0.2rem;
-  }
+div,
+label {
+  padding: 0.2rem;
+}
 </style>
 
 <script>
 import anagrams from "@/helpers/anagrams";
-import {getRandomInteger} from "@/helpers/helpers";
+import { getRandomInteger } from "@/helpers/helpers";
 
 export default {
-  name: 'AnagramGame',
+  name: "AnagramGame",
   data() {
     return {
-      userName: '',
+      userName: "",
       score: 0,
       timeLeft: 60,
       anagrams: anagrams,
@@ -87,26 +104,30 @@ export default {
       correctGuesses: [],
       userInput: "",
       interval: null,
-    }
+    };
   },
   computed: {
     guessesLeft() {
       return this.anagramList.length - this.correctGuesses.length - 1;
-    }
+    },
   },
   methods: {
     play() {
       this.score = 0;
       this.screen = "play";
       this.newAnagramList();
-      
+
       this.interval = setInterval(() => {
         this.timeLeft -= 1;
-      }, 1000)
+      }, 1000);
     },
     checkAnswer() {
-      const input = this.userInput.toLowerCase()
-      if (this.anagramList.includes(input) && !this.correctGuesses.includes(input) && this.currentWord !== input) {
+      const input = this.userInput.toLowerCase();
+      if (
+        this.anagramList.includes(input) &&
+        !this.correctGuesses.includes(input) &&
+        this.currentWord !== input
+      ) {
         this.correctGuesses.push(input);
         this.userInput = "";
         this.score += 1;
@@ -119,22 +140,31 @@ export default {
     newAnagramList() {
       const currentAnagramList = [...this.anagramList];
       const potentialAnagramLists = this.anagrams[this.wordLength];
-      this.anagramList = [...potentialAnagramLists[getRandomInteger(0, potentialAnagramLists.length)]];
+      this.anagramList = [
+        ...potentialAnagramLists[
+          getRandomInteger(0, potentialAnagramLists.length)
+        ],
+      ];
       while (this.anagramList[0] === currentAnagramList[0]) {
-        this.anagramList = [...potentialAnagramLists[getRandomInteger(0, potentialAnagramLists.length)]];
+        this.anagramList = [
+          ...potentialAnagramLists[
+            getRandomInteger(0, potentialAnagramLists.length)
+          ],
+        ];
       }
-      this.currentWord = this.anagramList[getRandomInteger(0, this.anagramList.length)];
+      this.currentWord =
+        this.anagramList[getRandomInteger(0, this.anagramList.length)];
       this.correctGuesses = [];
     },
     async recordScore() {
       // TODO: when Anagram Hunt finishes, make an Ajax call with axios (this.axios)
       // to record the score on the backend
-    }
+    },
   },
   watch: {
     userInput() {
       // check answer when user input changes
-      this.checkAnswer()
+      this.checkAnswer();
     },
     timeLeft(newValue) {
       if (newValue == 0) {
@@ -143,7 +173,7 @@ export default {
         clearInterval(this.interval);
         this.recordScore(); // calls recordScore
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>

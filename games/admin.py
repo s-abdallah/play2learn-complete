@@ -16,6 +16,13 @@ class GameTrackAdmin(admin.ModelAdmin):
         "end_time",
     ]
 
+    # Customizing List View
+    # List Attributes
+    date_hierarchy = "updated"
+    list_filter = ["updated", "score", "tries"]
+    ordering = ["-updated"]
+    search_fields = ["score", "tries"]
+
     def get_readonly_fields(self, request, obj=None):
         if obj:  # editing an existing object
             return ("created", "updated")

@@ -6,7 +6,10 @@ window.addEventListener("load", () => {
     localStorage.setItem("userInput", "");
     localStorage.setItem("attempts", 0);
 
+    // start the game..
     const playBtn = document.getElementById("game-start");
+    // check if the game is Math Facts..
+    // save the game settings to user local storage.
     if (gameType == "math_facts") {
       const operation = document.getElementById("operation");
       const maxNum = document.getElementById("max-number");
@@ -25,22 +28,49 @@ window.addEventListener("load", () => {
         localStorage.setItem("maxValue", e.target.value);
       });
     }
-    playBtn.addEventListener("click", () => {
-      // Create the game settings object
-      game_settings = {
-        operation: localStorage.getItem("operation"),
-        max_number: localStorage.getItem("maxValue"),
-      };
-      localStorage.setItem("question", getQuestionAnswer());
+    // check if the game is Anagram Hunt..
+    // save the game settings to user local storage.
+    if (gameType == "anagram_hunt") {
+      const wordLength = document.getElementById("word-length");
+      // Get the selected value from the word length dropdown
+      localStorage.setItem(
+        "wordLength",
+        wordLength.options[wordLength.selectedIndex].value
+      );
+      wordLength.addEventListener("change", (e) => {
+        localStorage.setItem("wordLength", e.target.value);
+      });
+    }
 
-      startGame(game_settings);
+    playBtn.addEventListener("click", () => {
+      initialGame(gameType);
     });
   }
 });
 
-function startGame(settings) {
+// this function to initial the game.
+function initialGame(gameType) {
+  let game_settings;
+
+  if (gameType == "math_facts") {
+    game_settings = mathSettings();
+  }
+  if (gameType == "anagram_hunt") {
+    game_settings = anagramSettings();
+  }
+  // a function to startGame to save the basic data to admin..
+  startGame(game_settings);
+}
+
+// this function to get the csrf token.
+function getToken() {
   const csrfInput = document.querySelector("input[name='csrfmiddlewaretoken']");
   const csrfToken = csrfInput.value;
+  return csrfToken;
+}
+
+function startGame(settings) {
+  const csrfToken = getToken();
 
   const data = {
     game_type: gameType,
@@ -92,13 +122,13 @@ function updateGame(gameId) {
         localStorage.setItem("userInput", "");
       });
     }
+    // word-guess the id of ol has correct guesses.
   }
 }
 
 function updateAttempts(gameId) {
   const attempts = localStorage.getItem("attempts");
-  const csrfInput = document.querySelector("input[name='csrfmiddlewaretoken']");
-  const csrfToken = csrfInput.value;
+  const csrfToken = getToken();
 
   if (localStorage.getItem("gameId") == gameId) {
     const data = {
@@ -123,10 +153,7 @@ function updateAttempts(gameId) {
 
 function endGame(gameId) {
   if (document.getElementById("game-score")) {
-    const csrfInput = document.querySelector(
-      "input[name='csrfmiddlewaretoken']"
-    );
-    const csrfToken = csrfInput.value;
+    const csrfToken = getToken();
     const gameScoreEl = document.getElementById("game-score");
     const score = gameScoreEl.innerText || gameScoreEl.textContent;
     if (localStorage.getItem("gameId") == gameId) {
@@ -149,20 +176,10 @@ function endGame(gameId) {
 
           if (document.getElementById("play-again")) {
             const playAgainBtn = document.getElementById("play-again");
-            if (gameType == "math_facts") {
-              playAgainBtn.addEventListener("click", () => {
-                alert("Play Again");
-                resetGame(); // reset the game
-                // Create the game settings object
-                game_settings = {
-                  operation: localStorage.getItem("operation"),
-                  max_number: localStorage.getItem("maxValue"),
-                };
-                localStorage.setItem("question", getQuestionAnswer());
-
-                startGame(game_settings);
-              });
-            }
+            playAgainBtn.addEventListener("click", () => {
+              resetGame(); // reset the game
+              initialGame(gameType); // initial the game
+            });
           }
         });
     }
@@ -224,4 +241,25 @@ function checkAnswer(userInput, correctAnswer) {
 function resetGame() {
   localStorage.setItem("attempts", 0);
   localStorage.setItem("userInput", "");
+}
+
+// this function to set the math facts settings
+function mathSettings() {
+  // Create the game settings object
+  const settings = {
+    operation: localStorage.getItem("operation"),
+    max_number: localStorage.getItem("maxValue"),
+  };
+  // save the new question in local storage..
+  localStorage.setItem("question", getQuestionAnswer());
+
+  return settings;
+}
+// this function to set the anagram game settings
+function anagramSettings() {
+  // Create the game settings object
+  const settings = {
+    wordLength: localStorage.getItem("wordLength"),
+  };
+  return settings;
 }
